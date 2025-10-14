@@ -1,37 +1,32 @@
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
+document.addEventListener('DOMContentLoaded', () => {
+  // Smooth Scrolling
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(anchor.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
+      });
     });
-});
+  });
 
-// Add fade-in animation on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
+  // Fade-in Animation
+  const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('fade-in');
-        }
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
     });
-}, observerOptions);
+  }, { threshold: 0.1 });
 
-document.querySelectorAll('.fade-in').forEach(el => {
-    observer.observe(el);
-});
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-// Show/hide scroll to top button
-window.addEventListener('scroll', () => {
-    const scrollTop = document.querySelector('.scroll-top');
+  // Scroll-to-Top Button
+  const scrollTopBtn = document.querySelector('.scroll-top');
+  window.addEventListener('scroll', () => {
     if (window.pageYOffset > 300) {
-        scrollTop.style.display = 'block';
+      scrollTopBtn.classList.add('show');
     } else {
-        scrollTop.style.display = 'none';
+      scrollTopBtn.classList.remove('show');
     }
+  });
 });
